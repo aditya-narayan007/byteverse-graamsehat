@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config(); // MUST BE FIRST
+dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
@@ -25,7 +25,6 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 app.use(cors({
   origin: "*",
-  credentials: true
 }));
 
 app.use(express.json({ limit: '2mb' }));
@@ -54,24 +53,39 @@ app.use('/api/stats', statsRoutes);
 // ================= ML ROUTE =================
 app.post("/api/predict", async (req, res) => {
   try {
+    // 🔥 IMPORTANT: ensure ML_URL exists
+    if (!process.env.ML_URL) {
+      return res.status(500).json({ error: "ML_URL not set in environment" });
+    }
+
     const response = await axios.post(
       `${process.env.ML_URL}/predict`,
-      req.body
+      req.body,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
     );
 
     res.json(response.data);
+
   } catch (err) {
-    console.error("ML ERROR:", err.message);
+    console.error("ML ERROR FULL:", err);
+
     res.status(500).json({
       error: "ML service failed",
-      details: err.message
+      message: err.message
     });
   }
 });
 
 // ================= 404 =================
-app.use((_req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+app.use((req, res) => {
+  res.status(404).json({
+    error: "Route not found",
+    path: req.originalUrl
+  });
 });
 
 // ================= ERROR HANDLER =================
@@ -81,42 +95,31 @@ app.use(errorHandler);
 let server;
 
 function shutdown(signal) {
-  console.log(`[Server] ${signal} received — shutting down gracefully`);
+  console.log(`[Server] ${signal} received — shutting down`);
   if (server) {
-    server.close(() => {
-      console.log('[Server] HTTP server closed');
-      process.exit(0);
-    });
+    server.close(() => process.exit(0));
   }
-  setTimeout(() => {
-    console.error('[Server] Force exit after timeout');
-    process.exit(1);
-  }, 10000);
+  setTimeout(() => process.exit(1), 10000);
 }
 
 async function start() {
   try {
-    // DB connection (safe)
     try {
       await checkDbConnection();
-      console.log("[DB] Connected successfully");
+      console.log("[DB] Connected");
     } catch (err) {
-      console.log("⚠️ DB failed, continuing without DB:", err.message);
+      console.log("⚠️ DB failed, continuing:", err.message);
     }
 
-    // Start server
-    if (!server) {
-      server = app.listen(PORT, () => {
-        console.log(`[Server] GraamSehat backend running on port ${PORT}`);
-        console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
-      });
-    }
+    server = app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
 
     process.on('SIGTERM', () => shutdown('SIGTERM'));
     process.on('SIGINT', () => shutdown('SIGINT'));
 
   } catch (err) {
-    console.error('[Server] Failed to start:', err.message);
+    console.error("Startup failed:", err.message);
     process.exit(1);
   }
 }
