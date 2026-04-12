@@ -31,7 +31,9 @@ app.use(express.json({ limit: '2mb' }));
 app.get('/', (req, res) => {
   res.send("Backend is LIVE 🚀");
 });
-
+app.get('/test', (req, res) => {
+  res.send("TEST WORKING");
+});
 // Health check
 app.get('/api/ping', (_req, res) => {
   res.status(200).json({ ok: true, ts: Date.now() });
