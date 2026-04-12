@@ -140,9 +140,37 @@ python app.py
 ---
 
 ## 👤 Author
+## 👥 Team Members & Roles
 
-Aditya Narayan
+### 👨‍💻 Aditya Narayan — Backend Developer
+- Designed and developed REST APIs  
+- Managed database and server-side logic  
+- Implemented authentication and data handling  
+- Ensured scalability and performance  
 
+---
+
+### 🎨 Anjali — Frontend Developer
+- Built responsive and user-friendly UI  
+- Integrated frontend with backend APIs  
+- Focused on usability and accessibility  
+- Implemented core features and user flows  
+
+---
+
+### 🤖 Harshwardhan — AI/ML Engineer
+- Developed and trained machine learning model  
+- Performed data preprocessing and feature engineering  
+- Integrated ML model with backend APIs  
+- Optimized model performance  
+
+---
+
+### ⚙️ Neha Kumari — System Integration & Deployment Engineer
+- Integrated frontend, backend, and ML components  
+- Managed API communication and debugging  
+- Handled deployment (Render / Vercel, etc.)  
+- Conducted end-to-end testing and ensured system stability   
 ---
 
 ## 📜 License
