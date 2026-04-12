@@ -63,13 +63,23 @@ function shutdown(signal) {
 let server;
 async function start() {
   try {
-    await checkDbConnection();
+    // Try DB connection but don't crash if it fails
+    try {
+      await checkDbConnection();
+      console.log("[DB] Connected successfully");
+    } catch (err) {
+      console.log("⚠️ DB failed, continuing without DB:", err.message);
+    }
+
+    // Start server anyway
     server = app.listen(PORT, () => {
       console.log(`[Server] GraamSehat backend running on port ${PORT}`);
       console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
     });
+
     process.on('SIGTERM', () => shutdown('SIGTERM'));
-    process.on('SIGINT',  () => shutdown('SIGINT'));
+    process.on('SIGINT', () => shutdown('SIGINT'));
+
   } catch (err) {
     console.error('[Server] Failed to start:', err.message);
     process.exit(1);
