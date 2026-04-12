@@ -14,10 +14,11 @@ import facilitiesRoutes from './routes/facilities.js';
 import ashaRoutes from './routes/asha.js';
 import authRoutes from './routes/auth.js';
 import statsRoutes from './routes/stats.js';
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Security & logging middleware
+// Middleware
 app.use(helmet());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(cors({
@@ -26,33 +27,43 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '2mb' }));
 
-// Health check — used by frontend connectivity probe + Railway
+// Root route (for testing)
+app.get('/', (req, res) => {
+  res.send("Backend is LIVE 🚀");
+});
+
+// Health check
 app.get('/api/ping', (_req, res) => {
   res.status(200).json({ ok: true, ts: Date.now() });
 });
 
 // Routes
-app.use('/api/sync',       syncRoutes);
+app.use('/api/sync', syncRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/facilities', facilitiesRoutes);
-app.use('/api/asha',       ashaRoutes);
-app.use('/api/auth',       authRoutes);
-app.use('/api/stats',      statsRoutes);
+app.use('/api/asha', ashaRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/stats', statsRoutes);
+
 // 404 handler
 app.use((_req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// Error handler — must be last
+// Error handler
 app.use(errorHandler);
 
 // Graceful shutdown
+let server;
+
 function shutdown(signal) {
   console.log(`[Server] ${signal} received — shutting down gracefully`);
-  server.close(() => {
-    console.log('[Server] HTTP server closed');
-    process.exit(0);
-  });
+  if (server) {
+    server.close(() => {
+      console.log('[Server] HTTP server closed');
+      process.exit(0);
+    });
+  }
   setTimeout(() => {
     console.error('[Server] Force exit after timeout');
     process.exit(1);
@@ -60,10 +71,9 @@ function shutdown(signal) {
 }
 
 // Start server
-let server;
 async function start() {
   try {
-    // Try DB connection but don't crash if it fails
+    // DB connection (safe)
     try {
       await checkDbConnection();
       console.log("[DB] Connected successfully");
@@ -71,11 +81,13 @@ async function start() {
       console.log("⚠️ DB failed, continuing without DB:", err.message);
     }
 
-    // Start server anyway
-    server = app.listen(PORT, () => {
-      console.log(`[Server] GraamSehat backend running on port ${PORT}`);
-      console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
-    });
+    // Prevent multiple starts
+    if (!server) {
+      server = app.listen(PORT, () => {
+        console.log(`[Server] GraamSehat backend running on port ${PORT}`);
+        console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
+      });
+    }
 
     process.on('SIGTERM', () => shutdown('SIGTERM'));
     process.on('SIGINT', () => shutdown('SIGINT'));
