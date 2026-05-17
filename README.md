@@ -1,64 +1,78 @@
-# deployement : https://byteverse-graamsehat.vercel.app/
+<div align="center">
 
-# GraamSehat 🏥
+# 🏥 GraamSehat
 
-AI-powered rural health monitoring system that enables ASHA workers to track patients, analyze health risks, and improve rural healthcare delivery using real-time data and machine learning.
+### AI-Powered Rural Health Monitoring System
 
----
+*Empowering ASHA workers with intelligent tools to transform rural healthcare delivery*
 
-## 🚀 Problem Statement
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-brightgreen?style=for-the-badge)](https://byteverse-graamsehat.vercel.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![Built with React](https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Backend-Node.js-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
 
-Rural healthcare systems face major challenges:
-
-* No real-time patient monitoring
-* Poor data synchronization across systems
-* Lack of predictive healthcare tools
-* Heavy dependence on manual processes
+</div>
 
 ---
 
-## 💡 Solution
+## 📌 Overview
 
-GraamSehat solves these problems by providing:
+GraamSehat is a full-stack AI-powered platform designed to modernize rural healthcare in India. It equips **ASHA (Accredited Social Health Activist) workers** with real-time patient tracking, ML-based risk prediction, and an offline-first data pipeline — replacing fragmented manual workflows with a unified digital system.
 
-* 📱 A digital platform for ASHA workers
-* 🧠 AI-based health risk prediction
-* 📊 Real-time dashboard for insights
-* 🔄 Offline-first data sync system
+> 🚀 **Live Deployment:** [byteverse-graamsehat.vercel.app](https://byteverse-graamsehat.vercel.app/)
+
+---
+
+## 🔍 Problem Statement
+
+Rural healthcare in India faces deeply systemic challenges:
+
+| Challenge | Impact |
+|---|---|
+| No real-time patient monitoring | Delayed identification of at-risk patients |
+| Poor data synchronization | Inconsistent records across health centers |
+| No predictive tools | Reactive rather than preventive care |
+| Manual, paper-based processes | High error rates and data loss |
+
+---
+
+## 💡 Our Solution
+
+GraamSehat addresses these gaps through four core pillars:
+
+- **📱 Digital Platform** — A purpose-built interface for ASHA workers to register, track, and manage patient cases from the field
+- **🧠 AI Risk Prediction** — A machine learning model that flags high-risk patients based on health parameters, enabling proactive intervention
+- **📊 Analytics Dashboard** — Real-time insights into population health trends across villages and regions
+- **🔄 Offline-First Sync** — Robust data synchronization that works reliably even in low-connectivity rural environments
 
 ---
 
 ## ✨ Key Features
 
-* ASHA Worker Registration System
-* Patient Case Tracking & Sync
-* AI-based Risk Prediction
-* Health Analytics Dashboard
-* Scalable Backend Architecture
+- ✅ ASHA Worker Registration & Authentication
+- ✅ Patient Case Tracking with Sync Engine
+- ✅ AI-Based Health Risk Prediction (TensorFlow / Scikit-learn)
+- ✅ Real-Time Health Analytics Dashboard
+- ✅ Scalable RESTful Backend Architecture
+- ✅ Redis Caching for Performance
+- ✅ PostgreSQL for Reliable Persistent Storage
 
 ---
 
 ## 🏗️ Tech Stack
 
-**Backend**
-
-* Node.js + Express
-* PostgreSQL
-* Redis
-
-**Frontend**
-
-* React (Vite)
-
-**ML Service**
-
-* Python
-* TensorFlow / Scikit-learn
+| Layer | Technology |
+|---|---|
+| **Frontend** | React (Vite) |
+| **Backend** | Node.js + Express |
+| **Database** | PostgreSQL |
+| **Cache** | Redis |
+| **ML Service** | Python, TensorFlow, Scikit-learn |
+| **Deployment** | Vercel (Frontend), Render (Backend) |
 
 ---
 
 ## 📂 Project Structure
-
 ```
 graamsehat/
 ├── backend/        # API and database logic
@@ -70,109 +84,87 @@ graamsehat/
 
 ---
 
-## 🔌 API Endpoints
+## 🔌 API Reference
 
-| Method | Endpoint               | Description             |
-| ------ | ---------------------- | ----------------------- |
-| POST   | /api/asha/register     | Register ASHA worker    |
-| GET    | /api/asha/:phone       | Fetch ASHA details      |
-| POST   | /api/sync/cases        | Sync patient cases      |
-| GET    | /api/dashboard/summary | Get dashboard analytics |
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/asha/register` | Register a new ASHA worker |
+| `GET` | `/api/asha/:phone` | Fetch ASHA worker details by phone |
+| `POST` | `/api/sync/cases` | Sync patient cases from field |
+| `GET` | `/api/dashboard/summary` | Retrieve aggregated health analytics |
 
 ---
 
-## ⚙️ How to Run the Project
+## ⚙️ Local Setup
 
-### 1. Clone Repository
+### Prerequisites
+- Node.js ≥ 18
+- Python ≥ 3.9
+- PostgreSQL & Redis running locally
 
-```
+### 1. Clone the Repository
+
+```bash
 git clone https://github.com/YOUR_USERNAME/graamsehat.git
 cd graamsehat
 ```
 
----
+### 2. Start the Backend
 
-### 2. Start Backend
-
-```
+```bash
 cd backend
 npm install
 npm run dev
 ```
 
----
+### 3. Start the Frontend
 
-### 3. Start Frontend
-
-```
+```bash
 cd frontend
 npm install
 npm run dev
 ```
 
----
+### 4. Start the ML Service
 
-### 4. Start ML Service
-
-```
+```bash
 cd ml-service
 pip install -r requirements.txt
 python app.py
 ```
 
----
-
-## 📊 Pre-built Assets
-
-* PostgreSQL database
-* Redis caching system
-* Machine learning libraries (TensorFlow, Scikit-learn)
+The frontend will be available at `http://localhost:5173` and the backend at `http://localhost:3000` by default.
 
 ---
 
-## 🧠 Future Scope
+## 🧠 Future Roadmap
 
-* Mobile application for ASHA workers
-* Real-time alert system
-* Telemedicine integration
-* Advanced AI models
-
----
-
-## 👤 Author
-## 👥 Team Members & Roles
-
-### 👨‍💻 Aditya Narayan — Backend Developer
-- Designed and developed REST APIs  
-- Managed database and server-side logic  
-- Implemented authentication and data handling  
-- Ensured scalability and performance  
+- [ ] 📲 Mobile app for ASHA workers (Android-first)
+- [ ] 🔔 Real-time patient alert system via SMS/push notifications
+- [ ] 🩺 Telemedicine integration for remote consultations
+- [ ] 🤖 Advanced ML models (time-series vitals, multi-disease risk stratification)
+- [ ] 🌐 Multilingual support (Hindi, regional languages)
+- [ ] 📡 FHIR-compliant health data interoperability
 
 ---
 
-### 🎨 Anjali — Frontend Developer
-- Built responsive and user-friendly UI  
-- Integrated frontend with backend APIs  
-- Focused on usability and accessibility  
-- Implemented core features and user flows  
+## 👥 Team — ByteVerse
 
----
+| Member | Role | Responsibilities |
+|---|---|---|
+| **Aditya Narayan** | Backend Developer | REST APIs, database architecture, authentication, scalability |
+| **Anjali** | Frontend Developer | React UI, API integration, accessibility, user flows |
+| **Harshwardhan** | AI/ML Engineer | Model development, data preprocessing, feature engineering, ML-backend integration |
+| **Neha Kumari** | Integration & Deployment | System integration, API debugging, Vercel/Render deployment, end-to-end testing |
 
-### 🤖 Harshwardhan — AI/ML Engineer
-- Developed and trained machine learning model  
-- Performed data preprocessing and feature engineering  
-- Integrated ML model with backend APIs  
-- Optimized model performance  
-
----
-
-### ⚙️ Neha Kumari — System Integration & Deployment Engineer
-- Integrated frontend, backend, and ML components  
-- Managed API communication and debugging  
-- Handled deployment (Render / Vercel, etc.)  
-- Conducted end-to-end testing and ensured system stability   
 ---
 
 ## 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+  Built with ❤️ for rural India &nbsp;|&nbsp; ByteVerse Hackathon
+</div>
