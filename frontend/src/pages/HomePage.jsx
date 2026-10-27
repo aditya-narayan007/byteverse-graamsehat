@@ -851,7 +851,7 @@ import { useNavigate } from "react-router-dom";
 import { Sidebar, Topbar, sharedStyles } from "../components/Layout.jsx";
 import { getCurrentUser } from "./utils/auth.js";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const dashStyles = `
   /* ─── HERO ─────────────────────────────────────── */

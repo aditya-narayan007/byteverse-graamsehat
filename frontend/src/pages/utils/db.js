@@ -63,7 +63,7 @@ export async function saveCase(triageResult, inputText, location = null) {
     location,
     timestamp: new Date().toISOString(),
     synced: false,
-    ashaId: localStorage.getItem('asha_id') || 'demo_worker'
+    ashaId: (() => { try { const u = JSON.parse(sessionStorage.getItem('user') || localStorage.getItem('user') || '{}'); return u?.asha_id || u?.id || 'demo_worker'; } catch { return 'demo_worker'; } })()
   }
  
   return new Promise((resolve, reject) => {

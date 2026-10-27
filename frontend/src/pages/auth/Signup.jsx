@@ -401,11 +401,6 @@ export default function Signup() {
       password: pwd,
     });
 
-    // 🔥 FIX STARTS HERE
-    localStorage.setItem("token", response.token);
-    localStorage.setItem("user", JSON.stringify(response.data));
-    // 🔥 FIX ENDS HERE
-
     setAuthUser(response.data, true);
 
     navigate('/homepage');

@@ -53,7 +53,8 @@ export default function LandingPage() {
   useEffect(() => {
     const fetchCaseStats = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/stats/cases');
+        const API_URL = import.meta.env.VITE_API_URL;
+        const response = await fetch(`${API_URL}/api/stats/cases`)
         const data = await response.json();
         if (data.success) {
           setCaseStats(data.data);

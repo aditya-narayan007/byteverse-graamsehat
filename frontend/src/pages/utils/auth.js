@@ -34,15 +34,15 @@ export async function signupUser(payload) {
   return response;
 }
 
-export async function loginUser(identifier, password) {
+export async function loginUser(identifier, password, remember = false) {
   const response = await request('/api/auth/login', {
     method: 'POST',
     body: JSON.stringify({ identifier, password }),
   });
 
   if (response.success) {
-    setToken(response.token);
-    setAuthUser(response.data);
+    setToken(response.token, remember);
+    setAuthUser(response.data, remember);
   }
 
   return response;

@@ -304,6 +304,8 @@ const ADVICE = {
    AI CALL via Anthropic API
 ───────────────────────────────────────────── */
 async function callClaudeAPI(messages, patientContext) {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+
   const systemPrompt = `You are GramSehat AI — an intelligent medical triage assistant for ASHA (Accredited Social Health Activist) workers in rural Bihar, India. 
 You help ASHA workers assess patients and decide the urgency level.
 
@@ -325,24 +327,27 @@ Rules:
 6. Always consider pregnancy-related risks seriously.`;
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const response = await fetch(`${BACKEND_URL}/api/ai/diagnose`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
         system: systemPrompt,
-        messages: messages.map((m) => ({
-          role: m.role,
-          content: m.content,
-        })),
+        messages: messages.map((m) => ({ role: m.role, content: m.content })),
+        max_tokens: 1000,
       }),
     });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      console.error('AI proxy error:', err);
+      return null;
+    }
+
     const data = await response.json();
-    const fullText = data.content?.map((c) => c.text || "").join("") || "";
+    const fullText = data.content?.map((c) => c.text || '').join('') || '';
     return fullText;
   } catch (err) {
-    console.error("Claude API error:", err);
+    console.error('AI proxy fetch error:', err);
     return null;
   }
 }

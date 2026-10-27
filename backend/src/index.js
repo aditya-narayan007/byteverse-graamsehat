@@ -15,6 +15,7 @@ import facilitiesRoutes from './routes/facilities.js';
 import ashaRoutes from './routes/asha.js';
 import authRoutes from './routes/auth.js';
 import statsRoutes from './routes/stats.js';
+import aiRoutes from './routes/ai.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -23,8 +24,21 @@ const PORT = process.env.PORT || 3001;
 app.use(helmet());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
+// Build allowed-origins list from env (comma-separated) or fall back to localhost
+const ALLOWED_ORIGINS = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
+  : ['http://localhost:5173'];
+
 app.use(cors({
-  origin: "*",
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g. curl, Postman, mobile apps)
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: origin '${origin}' not allowed`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(express.json({ limit: '2mb' }));
@@ -49,6 +63,7 @@ app.use('/api/facilities', facilitiesRoutes);
 app.use('/api/asha', ashaRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/ai', aiRoutes);
 
 // ================= ML ROUTE =================
 app.post("/api/predict", async (req, res) => {
