@@ -304,7 +304,7 @@ const ADVICE = {
    AI CALL via Anthropic API
 ───────────────────────────────────────────── */
 async function callClaudeAPI(messages, patientContext) {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const systemPrompt = `You are GramSehat AI — an intelligent medical triage assistant for ASHA (Accredited Social Health Activist) workers in rural Bihar, India. 
 You help ASHA workers assess patients and decide the urgency level.

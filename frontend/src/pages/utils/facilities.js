@@ -1,4 +1,4 @@
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 // ── Fetch facilities from backend ─────────────────────────────────────
 // Matches backend GET /api/facilities?block=Bihta
